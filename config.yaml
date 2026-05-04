@@ -1,0 +1,30 @@
+llm:
+  model: gpt-4o-mini
+  temperature: 0.2
+  max_tokens: 800
+
+embedding:
+  model: text-embedding-3-small
+
+retrieval:
+  top_k: 5
+
+chunking:
+  min_chunk_size: 300
+  max_chunk_size: 1000
+  overlap: 100
+
+memory:
+  max_history: 5
+
+cache:
+  similarity_threshold: 0.92
+  max_size: 512
+
+paths:
+  data_dir: ./data/raw
+  chroma_dir: ./chroma_db
+
+logging:
+  enabled: true
+  log_file: ./logs/assistant.log

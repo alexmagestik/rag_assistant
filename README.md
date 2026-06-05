@@ -1,7 +1,9 @@
 # RAG Ассистент
 
-CLI-приложение на Python, реализующее RAG (Retrieval-Augmented Generation) ассистента. 
+Приложение на Python с RAG (Retrieval-Augmented Generation) ассистентом. 
 Отвечает на вопросы **строго** на основе локальной базы знаний, сформированной из текстовых файлов компании.
+
+Доступны два интерфейса: **CLI** в терминале и **встраиваемый виджет** чата для сайта (`widget/`).
 
 ---
 
@@ -13,6 +15,7 @@ CLI-приложение на Python, реализующее RAG (Retrieval-Augm
 - ✏️ Опциональное переформулирование запроса для лучшего поиска
 - ⚡ Кэш эмбеддингов (LRU + cosine similarity dedup)
 - 📝 Логирование запросов и ответов
+- 🌐 Встраиваемый виджет чата для сайта (Shadow DOM, HTTP API)
 - 🧪 RAGAS-оценка качества (faithfulness, answer_relevancy, context_precision)
 
 ---
@@ -82,13 +85,38 @@ data/
 
 ## Запуск
 
+### CLI
+
 ```bash
 python main.py
 ```
 
 При первом запуске ассистент автоматически проиндексирует файлы из `data/raw/`.
 
-### Доступные команды в режиме диалога
+### Виджет для сайта
+
+HTTP-сервер с API и статикой виджета (из корня проекта, с настроенным `.env`):
+
+```bash
+pip install -r widget/requirements.txt
+uvicorn widget.server:app --host 0.0.0.0 --port 8080
+```
+
+Демо-страница: [http://localhost:8080/](http://localhost:8080/)
+
+Встраивание на любой сайт — одна строка:
+
+```html
+<script
+  src="http://localhost:8080/widget/embed.js"
+  data-api-url="http://localhost:8080"
+  data-title="Поддержка"
+></script>
+```
+
+Подробнее: атрибуты `data-*`, API, CORS — в [widget/README.md](widget/README.md).
+
+### Доступные команды в режиме диалога (CLI)
 
 | Команда  | Действие                                      |
 |----------|-----------------------------------------------|
@@ -165,6 +193,15 @@ rag-assistant/
 │   ├── test_core.py            # Unit-тесты (pytest)
 │   └── ragas_eval.py           # RAGAS оценка качества
 │
+├── widget/                     # Встраиваемый чат-виджет + HTTP API
+│   ├── server.py               # FastAPI: /api/chat, раздача static
+│   ├── requirements.txt        # fastapi, uvicorn
+│   └── static/
+│       ├── embed.js            # Точка входа для <script> на сайте
+│       ├── widget.js           # UI и запросы к API
+│       ├── widget.css
+│       └── demo.html           # Демо-страница
+│
 ├── config.yaml                 # Основная конфигурация
 ├── .env.example                # Пример переменных окружения
 ├── requirements.txt
@@ -232,7 +269,7 @@ python tests/ragas_eval.py
 | Расширение          | Где добавить                              |
 |---------------------|-------------------------------------------|
 | Telegram-бот        | Новый модуль `app/bot/`                   |
-| Web UI              | Новый модуль `app/web/` (FastAPI)         |
+| Доработка виджета   | `widget/static/`, `widget/server.py`      |
 | PDF / HTML файлы    | `app/ingestion/loader.py`                 |
 | API как источник    | `app/ingestion/loader.py`                 |
 | Веб-скрейпинг       | `app/ingestion/loader.py`                 |

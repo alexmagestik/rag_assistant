@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAG Widget — демо</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 720px;
+        margin: 48px auto;
+        padding: 0 24px;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+      pre {
+        background: #f1f5f9;
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+      code {
+        font-family: ui-monospace, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Встраиваемый виджет RAG-ассистента</h1>
+    <p>
+      На этой странице подключён виджет в правом нижнем углу. Он обращается к API
+      на том же хосте (<code>/api/chat</code>).
+    </p>
+
+    <h2>Встраивание на свой сайт</h2>
+    <p>Скопируйте фрагмент ниже, подставив URL вашего сервера виджета:</p>
+    <pre><code>&lt;script
+  src="https://ВАШ-ДОМЕН/widget/embed.js"
+  data-api-url="https://ВАШ-ДОМЕН"
+  data-title="Поддержка"
+  data-primary-color="#2563eb"
+&gt;&lt;/script&gt;</code></pre>
+
+    <p>Доступные атрибуты <code>data-*</code>:</p>
+    <ul>
+      <li><code>data-api-url</code> — базовый URL API (по умолчанию — origin скрипта)</li>
+      <li><code>data-assets-base</code> — базовый URL статики, если отличается от API</li>
+      <li><code>data-title</code>, <code>data-subtitle</code>, <code>data-welcome</code> — тексты интерфейса</li>
+      <li><code>data-primary-color</code> — основной цвет (HEX)</li>
+    </ul>
+
+    <script src="/widget/embed.js" data-title="RAG Ассистент"></script>
+  </body>
+</html>
